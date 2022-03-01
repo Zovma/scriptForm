@@ -1,0 +1,46 @@
+* {
+    font-size: 18px;
+}
+
+.container {
+    margin: 2em auto 0 auto;
+    width: 40em;
+    height: 20em;
+    /* border: 0.5px solid black; */
+    /* border: 0.2px solid grey; */
+    padding: 0 3em 0 3em;
+    /* border-radius: 5px; */
+    /* padding: 5% 0 5% 0; */
+}
+
+input {
+    border-left: 0;
+    border-right: 0;
+    border-top: 0;
+    width: 20em;
+    outline: none;
+    margin: 1em 0 1em 0;
+}
+
+#btn {
+    /* margin: 2em 0 0 21em; */
+    /* width: 10em; */
+    /* height: 2em; */
+    /* border: 0.2px solid grey; */
+    /* border-radius: 5px; */
+}
+
+.change{
+    border: 0.3px solid grey;
+    padding: 2em 2em 2em 2em;
+    border-radius: 5px;
+    margin: 0 0 1em 0;
+}
+
+span{
+    font-size: 15px; 
+}
+
+p {
+    margin: 0 0 0 0;
+}
