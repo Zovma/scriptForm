@@ -18,7 +18,7 @@ input {
     border-left: 0;
     border-right: 0;
     border-top: 0;
-    width: 100%;
+    width: 100%;;
     outline: none;
     margin: 1em 0 1em 0;
 }
@@ -34,11 +34,11 @@ input {
 div {
     border: 0.3px solid grey;
     padding: 2em 2em 2em 2em;
-    border-radius: 5px;
+    border-radius: 8px;
     margin: 0 0 1em 0;
 }
 
-span{
+span {
     font-size: 15px;
 }
 
@@ -50,6 +50,15 @@ input[type="radio"] {
     width: auto;
 }
 
-#radioBtn {
+#radioBtn {}
 
+textarea {
+    border-left: 0;
+    border-right: 0;
+    border-top: 0;
+    width: 100%;
+    min-height: 30px;
+    outline: none;
+    margin: 1em 0 1em 0;
+    padding: 5%;
 }
