@@ -2,36 +2,82 @@ const result = [];
 const container = document.querySelector(".container")
 let progress = 0;
 
-let btn = document.querySelector("#btn")
-btn.addEventListener("click", function (e) {
+let go = document.querySelector("#go")
+go.addEventListener("click", function (e) {
     change();
 });
 
+let back = document.querySelector("#back")
+back.addEventListener("click", function (e) {
+    if (progress > 1) {
+        progress -= 2;
+        result.pop()
+        removeElements(container);
+        createElements(container);
+        console.log(result);
+    }
+});
+
 function change() {
-    let elements = container.querySelectorAll(".change")
+    let elements = container.querySelectorAll("div")
     // console.log(elements);
     pushData(elements);
     removeElements(container);
-    createElements(container);
 
+    if (progress == 3) {
+        console.log('result из Progress', result);
+        console.log('progress == 3');
+        if (result[2][1] === 'Подбор и продажа продукта (здесь и сейчас)') {
+            console.log('Подбор и продажа продукта');
+            progress++;
+        } else if (result[2][1] === 'Назначение встречи (знакомство или презентация продукта)') {
+            progress += 2;
+            console.log('Назначение встречи');
+        } else if (result[2][1] === 'Отправка коммерческого предложения (здесь и сейчас)') {
+            progress += 17;
+            console.log('Отправка коммерческого предложения (здесь и сейчас)');
+        }
+    }
+
+    // if (progress == 7){
+    //     if (result[3][0] === 'Презентация продукта') {
+
+    //     }
+    // }
+
+    if (progress == 7) {
+        console.log('Проверка состоялась');
+        if (result[4][0] == 'Online'){
+            progress+=11;
+        }
+    }
+
+
+
+
+    createElements(container);
+    console.log(result);
+    console.log(progress);
 }
 
 function pushData(elements) {
+    let newArr = []
     for (let i = 0; i < elements.length; i++) {
-        let input = elements[i].querySelector('input');
-        // console.log(input);
-        result.push(input.value);
-
+        let inputs = elements[i].querySelectorAll('input');
+        if (inputs.length > 1) {
+            for (let i = 0; i < inputs.length; i++) {
+                if (inputs[i].checked) {
+                    newArr.push(inputs[i].value)
+                }
+            }
+            console.log(inputs[1].checked);
+        } else {
+            newArr.push(inputs.value);
+        }
     }
-    // console.log(result);
-}
-
-
-function removeElements() {
-    while (container.firstChild) {
-        container.removeChild(container.firstChild);
+    if (newArr.length > 0) {
+        result.push(newArr);
     }
-
 }
 
 function createElements() {
@@ -59,42 +105,48 @@ function createElements() {
             useMitingPickUp();
             break;
         case 7:
-            useMitingPickUpOnline();
+            useMitingPickUpOffline();
             break;
         case 8:
-            useMitingPickUpOnlineOurOffice();
+            useMitingPickUpOfflineOurOffice();
             break;
         case 9:
-            useMitingPickUpOnlineСlientOffice();
+            useMitingPickUpOfflineСlientOffice();
             break;
         case 10:
-            useMitingPickUpOflainNoMatterWhere();
+            useMitingPickUpOfflineNoMatterWhere();
             break;
         case 11:
-            useMitingProductPresentation();
+            useMitingPickUpOnline();
             break;
         case 12:
-            useMitingProductPresentationOffline();
+            useMitingPickUpNoMatterWhere();
             break;
         case 13:
-            useMitingProductPresentationOfflineOurOffice();
+            useMitingProductPresentation();
             break;
         case 14:
-            useMitingProductPresentationOfflineClientOffice();
+            useMitingProductPresentationOffline();
             break;
         case 15:
-            useMitingProductPresentationOfflineNoMatterWhere();
+            useMitingProductPresentationOfflineOurOffice();
             break;
         case 16:
-            useMitingProductPresentationOnline();
+            useMitingProductPresentationOfflineClientOffice();
             break;
         case 17:
-            useMitingProductPresentationNoMatterWhere();
+            useMitingProductPresentationOfflineNoMatterWhere();
             break;
         case 18:
-            sendingCommercialOffer();
+            useMitingProductPresentationOnline();
             break;
         case 19:
+            useMitingProductPresentationNoMatterWhere();
+            break;
+        case 20:
+            sendingCommercialOffer();
+            break;
+        case 21:
             finish();
             break;
     }
@@ -102,12 +154,9 @@ function createElements() {
 
 
 function scriptConstructor() {
-    createHeader("Конструктор скрипта")
     createDivPInput('Электронная почта')
     progress++;
 }
-
-
 
 function welcom() {
     createHeader("Приветствие")
@@ -120,71 +169,83 @@ function welcom() {
 function missionCall() {
     createHeader("Цель звонка")
     createDivPSpanInput("Напишите коротко о деятельности вашей организации и о тех реальных преимуществах, которые вы имеете в сравнении с конкурентами", 'Например: Мы занимаемся предоставлением пропусков для грузовых автомобилей в Москву. Взаимодействуя напрямую с департаментом транспорта имеем очень быстрое оформление и высокую степень одобрения - 99%')
-    createDivPRadio('Напишите цель данного звонка', [' Выявление потребностей', ' Подбор и продажа продукта', ' Назначение встречи', ' Отправка коммерческого предложения']);
+    createDivPRadio('Напишите цель данного звонка', ['Выявление потребностей (перед звонком с презентацией продукта)', 'Подбор и продажа продукта (здесь и сейчас)', 'Назначение встречи (знакомство или презентация продукта)', 'Отправка коммерческого предложения (здесь и сейчас)']);
     progress++
 }
 
 function definitionNeed() {
-    createHeader("Выявление потребностей")
+    createHeader("Выявление потребностей (перед звонком с презенацией продукта)")
     createDivPSpanInput("Напишите вопросы, выявляющие потребность, которые нужно задать клиенту, в той последовательности, в которой вы их будете задавать", "Например: Какой транспорт хотите застраховать? На какой срок обычно страхуете транспорт? Какие проблемы обычно возникают при страховании и дальнейшем использовании?")
     createDivPSpanInput("Напишите в течение какого количества дней ваше предложение будет готово для клиента", "Например: 1 день")
     createDivPSpanInput("Напишите сколько времени вам с клиентом понадобится на обсуждение предложения на следующем звонке", "Например: 15 минут")
-    progress++
+    progress+=18;
 }
 
 function selectionSaleProdukt() {
-    createHeader("Подбор и продажа продукта");
+    createHeader("Подбор и продажа продукта (здесь и сейчас)");
     createDivPSpanInput("Напишите вопросы, выявляющие потребность, которые нужно задать клиенту, в той последовательности, в которой вы их будете задавать", "Например: Какой транспорт хотите застраховать? На какой срок обычно страхуете транспорт? Какие проблемы обычно возникают при страховании и дальнейшем использовании?")
     createDivPSpanInput("Напишите последовательно все этапы оформления продукта после положительного решения клиента", 'Например: Сейчас я отправлю вам ссылку в Телеграм. Вам необходимо будет пройти по ней и нажать "Купить". После чего, ввести свои данные и данные вашей карты. Далее нажать кнопку "Оплатить"')
-    progress++
+    progress+=17;
 }
 
 function useMiting() {
     createHeader("Назначение встречи");
-    createDivPRadio('Напишите цель встречи', [' Знакомство', ' Презентация продукта']);
+    createDivPRadio('Напишите цель встречи', ['Знакомство', 'Презентация продукта']);
     progress++
 }
 
 function useMitingPickUp() {
     createHeader("Назначение встречи. Знакомство");
-    createDivPRadio('Напишите формат встречи, который предполагается в вашей компании', [' Offline', ' Online', ' Формат встречи не имеет значения']);
+    createDivPRadio('Напишите формат встречи, который предполагается в вашей компании', ['Offline', 'Online', 'Формат встречи не имеет значения']);
     progress++
 }
 
-function useMitingPickUpOnline() {
+function useMitingPickUpOffline() {
     createHeader("Назначение встречи. Знакомство. Offline");
-    createDivPRadio('Напишите, какой вариант встречи возможен', [' Наш офис', ' Офис клиента', ' Не важно где пройдет встреча']);
+    createDivPRadio('Напишите, какой вариант встречи возможен', ['Наш офис', 'Офис клиента', 'Не важно где пройдет встреча']);
     progress++
 }
 
-function useMitingPickUpOnlineOurOffice() {
+function useMitingPickUpOfflineOurOffice() {
     createHeader("Назначение встречи. Знакомство. Offline. Наш офис");
     createDivPSpanInput("Напишите адрес вашего офиса ", "Например: Невский проспект, дом 35, БЦ Атриум");
     createDivPSpanInput("Напишите, сколько времени потребуется на встречу", "Например: 1 час");
-    progress++
+    progress+=13;
 }
 
-function useMitingPickUpOnlineСlientOffice() {
+function useMitingPickUpOfflineСlientOffice() {
     createHeader("Назначение встречи. Знакомство. Offline. Офис клиента");
     createDivPSpanInput("Напишите, сколько времени потребуется на встречу", "Например: 1 час");
     progress++
 }
 
-function useMitingPickUpOflainNoMatterWhere() {
+function  useMitingPickUpOfflineNoMatterWhere() {
     createHeader("Назначение встречи. Знакомство. Offline. Не важно где пройдет встреча");
     createDivPSpanInput("Напишите, сколько времени потребуется на встречу", "Например: 1 час");
     progress++
 }
 
+function useMitingPickUpOnline() {
+    createHeader('Назначение встречи. Знакомство. Online')
+    createDivPSpanInput('Напишите какое приложение вы будете использовать для связи с клиентом', 'Например: Zoom, Google Meet, Skype')
+    createDivPSpanInput('Напишите, сколько времени потребуется на встречу', 'Например: 1 час')
+    progress+=10;
+}
+
+function useMitingPickUpNoMatterWhere(){
+    createHeader('Назначение встречи. Знакомство. Формат встречи не имеет значения')
+    createDivPSpanInput('Напишите, сколько времени потребуется на встречу', 'Например: 1 час')
+}
+
 function useMitingProductPresentation() {
     createHeader("Назначение встречи. Презентация продукта");
-    createDivPRadio('Напишите формат встречи, который предполагается в вашей компании', [' Offline', ' Online', ' Формат встречи не имеет значения']);
-    progress++
+    createDivPRadio('Напишите формат встречи, который предполагается в вашей компании', ['Offline', 'Online', 'Формат встречи не имеет значения']);
+    progress+=4;
 }
 
 function useMitingProductPresentationOffline() {
     createHeader('Назначение встречи. Презентация продукта. Offline');
-    createDivPRadio('Напишите, какой вариант встречи возможен', [' Наш офис', ' Офис клиента', ' Не важно где пройдет встреча'])
+    createDivPRadio('Напишите, какой вариант встречи возможен', ['Наш офис', 'Офис клиента', 'Не важно где пройдет встреча'])
     progress++
 }
 
@@ -193,7 +254,7 @@ function useMitingProductPresentationOfflineOurOffice() {
     createDivPSpanInput('Напишите вопросы, выявляющие потребность, которые нужно задать клиенту, в той последовательности, в которой вы их будете задавать', 'Например: Какой транспорт хотите застраховать? На какой срок обычно страхуете транспорт? Какие проблемы обычно возникают при страховании и дальнейшем использовании?')
     createDivPSpanInput('Напишите адрес вашего офиса', 'Например: Невский проспект, дом 35, БЦ Атриум');
     createDivPSpanInput('Напишите, сколько времени потребуется на встречу', 'Например: 1 час');
-    progress++
+    progress++;
 }
 
 function useMitingProductPresentationOfflineClientOffice() {
@@ -212,10 +273,9 @@ function useMitingProductPresentationOfflineNoMatterWhere() {
 
 function useMitingProductPresentationOnline() {
     createHeader('Назначение встречи. Презентация продукта. Online');
-    createDivPSpanInput('Напишите вопросы, выявляющие потребность, которые нужно задать клиенту, в той последовательности, в которой вы их будете задавать', 'Например: Какой транспорт хотите застраховать? На какой срок обычно страхуете транспорт? Какие проблемы обычно возникают при страховании и дальнейшем использовании?');
-    createDivPInput('Напишите какое приложение вы будете использовать для связи с клиентом', 'Например: Zoom, Google Meet, Skype');
-    createDivPInput('Напишите, сколько времени потребуется на встречу', 'Например: 1 час');
-    progress++
+    createDivPSpanInput('Напишите какое приложение вы будете использовать для связи с клиентом', 'Например: Zoom, Google Meet, Skype');
+    createDivPSpanInput('Напишите, сколько времени потребуется на встречу', 'Например: 1 час');
+    progress+=3
 }
 
 function useMitingProductPresentationNoMatterWhere() {
@@ -237,16 +297,12 @@ function finish() {
     progress++
 }
 
+function removeElements() {
+    while (container.firstChild) {
+        container.removeChild(container.firstChild);
+    }
 
-
-
-
-
-
-
-
-
-
+}
 
 function createHeader(contentH1) {
     let h1 = document.createElement("h1");

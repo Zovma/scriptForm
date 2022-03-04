@@ -1,11 +1,18 @@
 * {
     font-size: 18px;
+    font-family: monospace;
+    /* background-color:rgba(184, 152, 215, 0.6); */
+
 }
 
+/* body{
+    background-color: rgba(188, 142, 234, 0.221);
+} */
+
 .container {
+    background-color: white;
     margin: 2em auto 0 auto;
     width: 40em;
-    height: 20em;
     /* border: 0.5px solid black; */
     /* border: 0.2px solid grey; */
     padding: 0 3em 0 3em;
@@ -24,18 +31,19 @@ input {
 }
 
 #btn {
-    /* margin: 2em 0 0 21em; */
-    /* width: 10em; */
-    /* height: 2em; */
+    margin-left: 60%;
+    border: 0; 
+
     /* border: 0.2px solid grey; */
     /* border-radius: 5px; */
 }
 
 div {
-    border: 0.3px solid grey;
+    border: 1px solid rgba(128, 128, 128, 0.462);
     padding: 2em 2em 2em 2em;
     border-radius: 8px;
     margin: 0 0 1em 0;
+    background-color: white;
 }
 
 span {
@@ -48,9 +56,8 @@ p {
 
 input[type="radio"] {
     width: auto;
+    margin-right: 1%;
 }
-
-#radioBtn {}
 
 textarea {
     border-left: 0;
