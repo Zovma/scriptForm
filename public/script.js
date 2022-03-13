@@ -1,7 +1,9 @@
+
 const result = [];
 const container = document.querySelector(".container")
 let state = 'start';
 let historyState = ['start'];
+let sample;
 
 let go = document.querySelector("#go")
 go.addEventListener("click", function (e) {
@@ -13,7 +15,10 @@ back.addEventListener("click", function (e) {
     backState();
 });
 
-function backState(){
+function backState() {
+    if (state == 'finish') {
+        go.innerHTML = 'Далее';
+    }
     if (historyState.length > 1) {
         removeElements();
         historyState.pop();
@@ -78,6 +83,7 @@ function logic() {
             } else if (result[5][0] == 'Не важно где пройдет встреча') {
                 state = 'useMitingProductPresentationNoMatterWhere'
             }
+            break;
 
         case 'useMitingPickUp':
             if (result[4][0] == 'Offline') {
@@ -89,9 +95,9 @@ function logic() {
             }
             break;
 
-        case 'useMitingPickUpNoMatterWhere':
-            state = 'useMitingPickUpOfflineNoMatterWhere';
-            break;
+        // case 'useMitingPickUpNoMatterWhere':
+        //     state = 'useMitingPickUpOfflineNoMatterWhere';
+        //     break;
 
         case 'useMitingPickUpOffline':
             if (result[5][0] == 'Наш офис') {
@@ -102,6 +108,10 @@ function logic() {
                 state = 'useMitingPickUpOfflineNoMatterWhere';
             }
             break;
+        case 'finish':
+            state = 'sendScript'
+            break;
+
         default:
             state = 'finish';
     }
@@ -119,9 +129,9 @@ function change() {
     removeElements(container);
     logic()
     createElements();
-    console.log('state = ', state);
-    console.log('result = ', result);
-    console.log('historyState = ', historyState);
+    // console.log('state = ', state);
+    // console.log('result = ', result);
+    // console.log('historyState = ', historyState);
 }
 
 function historyRecord(stateNow) {
@@ -239,14 +249,30 @@ function createElements() {
             useMitingProductPresentationNoMatterWhere();
             break;
         case 'sendingCommercialOffer':
-            historyRecord('useMitingProductPresentationNoMatterWhere');
+            historyRecord('sendingCommercialOffer');
             sendingCommercialOffer();
             break;
         case 'finish':
             historyRecord('finish');
             finish();
             break;
+        case 'sendScript':
+            sendScript();
     }
+}
+
+function sendScript() {
+    let dataScript = JSON.stringify({sample, result});
+    console.log(dataScript);
+    let request = new XMLHttpRequest();
+    request.open("POST", "/scriptData", false);
+    request.setRequestHeader("Content-Type", "application/json");
+    request.send(dataScript);
+    request.addEventListener("load", function () {
+        // получаем и парсим ответ сервера
+        let receivedUser = JSON.parse(request.response);
+        console.log(receivedUser);   // смотрим ответ сервера
+    });
 }
 
 function start() {
@@ -279,14 +305,14 @@ function definitionNeed() {
     createDivPSpanInput("Напишите вопросы, выявляющие потребность, которые нужно задать клиенту, в той последовательности, в которой вы их будете задавать", "Например: Какой транспорт хотите застраховать? На какой срок обычно страхуете транспорт? Какие проблемы обычно возникают при страховании и дальнейшем использовании?")
     createDivPSpanInput("Напишите в течение какого количества дней ваше предложение будет готово для клиента", "Например: 1 день")
     createDivPSpanInput("Напишите сколько времени вам с клиентом понадобится на обсуждение предложения на следующем звонке", "Например: 15 минут")
-    // progress += 18;
+    sample = 'definitionNeed.xlsx'
 }
 
 function selectionSaleProdukt() {
     createHeader("Подбор и продажа продукта (здесь и сейчас)");
     createDivPSpanInput("Напишите вопросы, выявляющие потребность, которые нужно задать клиенту, в той последовательности, в которой вы их будете задавать", "Например: Какой транспорт хотите застраховать? На какой срок обычно страхуете транспорт? Какие проблемы обычно возникают при страховании и дальнейшем использовании?")
     createDivPSpanInput("Напишите последовательно все этапы оформления продукта после положительного решения клиента", 'Например: Сейчас я отправлю вам ссылку в Телеграм. Вам необходимо будет пройти по ней и нажать "Купить". После чего, ввести свои данные и данные вашей карты. Далее нажать кнопку "Оплатить"')
-    // progress += 17;
+    sample = 'selectionSaleProduct'
 }
 
 function useMiting() {
@@ -315,32 +341,32 @@ function useMitingPickUpOfflineOurOffice() {
     createHeader("Назначение встречи. Знакомство. Offline. Наш офис");
     createDivPSpanInput("Напишите адрес вашего офиса ", "Например: Невский проспект, дом 35, БЦ Атриум");
     createDivPSpanInput("Напишите, сколько времени потребуется на встречу", "Например: 1 час");
-    // progress += 13;
+    sample = 'useMitingPickUpOfflineOurOffice';
 }
 
 function useMitingPickUpOfflineСlientOffice() {
     createHeader("Назначение встречи. Знакомство. Offline. Офис клиента");
     createDivPSpanInput("Напишите, сколько времени потребуется на встречу", "Например: 1 час");
-    // progress += 12;
+    sample = 'useMitingPickUpOfflineСlientOffice';
 }
 
 function useMitingPickUpOfflineNoMatterWhere() {
     createHeader("Назначение встречи. Знакомство. Offline. Не важно где пройдет встреча");
     createDivPSpanInput("Напишите, сколько времени потребуется на встречу", "Например: 1 час");
-    // progress += 11
+    sample = 'useMitingPickUpOfflineNoMatterWhere';
 }
 
 function useMitingPickUpOnline() {
     createHeader('Назначение встречи. Знакомство. Online')
     createDivPSpanInput('Напишите какое приложение вы будете использовать для связи с клиентом', 'Например: Zoom, Google Meet, Skype')
     createDivPSpanInput('Напишите, сколько времени потребуется на встречу', 'Например: 1 час')
-    // progress += 10;
+    sample = 'useMitingPickUpOnline'
 }
 
 function useMitingPickUpNoMatterWhere() {
     createHeader('Назначение встречи. Знакомство. Формат встречи не имеет значения')
     createDivPSpanInput('Напишите, сколько времени потребуется на встречу', 'Например: 1 час')
-    // progress += 9;
+    sample ='useMitingPickUpNoMatterWhere';
 }
 
 function useMitingProductPresentation() {
@@ -360,21 +386,21 @@ function useMitingProductPresentationOfflineOurOffice() {
     createDivPSpanInput('Напишите вопросы, выявляющие потребность, которые нужно задать клиенту, в той последовательности, в которой вы их будете задавать', 'Например: Какой транспорт хотите застраховать? На какой срок обычно страхуете транспорт? Какие проблемы обычно возникают при страховании и дальнейшем использовании?')
     createDivPSpanInput('Напишите адрес вашего офиса', 'Например: Невский проспект, дом 35, БЦ Атриум');
     createDivPSpanInput('Напишите, сколько времени потребуется на встречу', 'Например: 1 час');
-    // progress++;
+    sample = 'useMitingProductPresentationOfflineOurOffice';
 }
 
 function useMitingProductPresentationOfflineClientOffice() {
     createHeader('Назначение встречи. Презентация продукта. Offline. Офис клиента');
-    createDivPInput('Напишите вопросы, выявляющие потребность, которые нужно задать клиенту, в той последовательности, в которой вы их будете задавать', 'Например: Какой транспорт хотите застраховать? На какой срок обычно страхуете транспорт? Какие проблемы обычно возникают при страховании и дальнейшем использовании?');
-    createDivPInput('Напишите, сколько времени потребуется на встречу', 'Например: 1 час')
-    // progress++
+    createDivPSpanInput('Напишите вопросы, выявляющие потребность, которые нужно задать клиенту, в той последовательности, в которой вы их будете задавать', 'Например: Какой транспорт хотите застраховать? На какой срок обычно страхуете транспорт? Какие проблемы обычно возникают при страховании и дальнейшем использовании?');
+    createDivPSpanInput('Напишите, сколько времени потребуется на встречу', 'Например: 1 час')
+    sample = 'useMitingProductPresentationOfflineClientOffice'
 }
 
 function useMitingProductPresentationOfflineNoMatterWhere() {
     createHeader('Назначение встречи. Презентация продукта. Offline. Не важно где пройдет встреча');
     createDivPSpanInput('Напишите вопросы, выявляющие потребность, которые нужно задать клиенту, в той последовательности, в которой вы их будете задавать', 'Например: Какой транспорт хотите застраховать? На какой срок обычно страхуете транспорт? Какие проблемы обычно возникают при страховании и дальнейшем использовании?')
     createDivPSpanInput('Напишите, сколько времени потребуется на встречу', 'Например: 1 час')
-    // progress++
+    sample = 'useMitingProductPresentationOfflineNoMatterWhere'
 }
 
 function useMitingProductPresentationOnline() {
@@ -382,25 +408,26 @@ function useMitingProductPresentationOnline() {
     createDivPSpanInput('Напишите вопросы, выявляющие потребность, которые нужно задать клиенту, в той последовательности, в которой вы их будете задавать', 'Например: Какой транспорт хотите застраховать? На какой срок обычно страхуете транспорт? Какие проблемы обычно возникают при страховании и дальнейшем использовании?');
     createDivPSpanInput('Напишите какое приложение вы будете использовать для связи с клиентом', 'Например: Zoom, Google Meet, Skype');
     createDivPSpanInput('Напишите, сколько времени потребуется на встречу', 'Например: 1 час');
-    // progress += 3
+    sample = 'useMitingProductPresentationOnline';
 }
 
 function useMitingProductPresentationNoMatterWhere() {
     createHeader('Назначение встречи. Презентация продукта. Формат встречи не имеет значения');
     createDivPSpanInput('Напишите вопросы, выявляющие потребность, которые нужно задать клиенту, в той последовательности, в которой вы их будете задавать', 'Например: Какой транспорт хотите застраховать? На какой срок обычно страхуете транспорт? Какие проблемы обычно возникают при страховании и дальнейшем использовании?')
-    createDivPInput('Напишите, сколько времени потребуется на встречу', 'Например: 1 час')
-    // progress++
+    createDivPSpanInput('Напишите, сколько времени потребуется на встречу', 'Например: 1 час')
+    sample = 'useMitingProductPresentationNoMatterWhere';
 }
 
 function sendingCommercialOffer() {
     createHeader('Отправка коммерческого предложения')
     createDivPSpanInput('Напишите вопросы, выявляющие потребность, которые нужно задать клиенту, в той последовательности, в которой вы их будете задавать', 'Например: Какой транспорт хотите застраховать? На какой срок обычно страхуете транспорт? Какие проблемы обычно возникают при страховании и дальнейшем использовании?')
-    // progress++
+    sample = 'SendingCommercialOffer'
 }
 
 function finish() {
     createHeader('Завершение')
     createDivPSpanInput('На этом закончим. Напишите, как вы вообще?', 'Например: Отлично, продуктивно, интересно');
+    go.innerHTML = 'Завершить';
 }
 
 function removeElements() {
@@ -479,3 +506,8 @@ function createDivPRadio(contentP, contentRadio) {
     container.appendChild(div);
 
 }
+
+
+
+
+
