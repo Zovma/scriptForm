@@ -1,4 +1,5 @@
 const express = require("express");
+const nodemailer = require('nodemailer')
 const path = require('path');
 const app = express();
 const fs = require("fs");
@@ -20,34 +21,23 @@ app.post("/scriptData", jsonParser, function (request, response) {
   console.log(dataScript.result);
   createSample(dataScript);
 
-
-
-  // fs.writeFileSync("./scriptData/scriptData.json", JSON.stringify(request.body));
 });
 
 
+
 function createSample(dataScript) {
-  // Load a new blank workbook
+  XlsxPopulate.fromBlankAsync()
   XlsxPopulate.fromFileAsync(dataScript.sample)
     .then(workbook => {
-      // Modify the workbook.
-      for (let i = 1; i < dataScript.result.length; i++ ) {
-        for (let j = 0; j < dataScript.result[i]; j++) {
-          workbook.find(/%variable%+/g, match => dataScript.result[i][j])
-          console.log('work');
-        }
-      }
+      workbook.find(/%Должность%+/g, match => dataScript.result[1][0])
+      workbook.find(/%Форма%+/g, match => dataScript.result[1][1])
+      workbook.find(/%Название%+/g, match => dataScript.result[1][2])
+      workbook.find(/%Потребность%+/g, match => dataScript.result[3][0])
+      workbook.find(/%ВремяГотовности%+/g, match => dataScript.result[3][1])
+      workbook.find(/%ВремяРазговора%+/g, match => dataScript.result[3][2])
 
-      // Write to file.
-      return workbook.toFileAsync("Шаблон2.xlsx");
+      return workbook.toFileAsync("./out.xlsx");
     });
 }
-
-
-
-
-
-
-
 
 app.listen(3000);
