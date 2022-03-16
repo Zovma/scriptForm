@@ -258,6 +258,7 @@ function createElements() {
             break;
         case 'sendScript':
             sendScript();
+            bye();
     }
 }
 
@@ -305,7 +306,7 @@ function definitionNeed() {
     createDivPSpanInput("Напишите вопросы, выявляющие потребность, которые нужно задать клиенту, в той последовательности, в которой вы их будете задавать", "Например: Какой транспорт хотите застраховать? На какой срок обычно страхуете транспорт? Какие проблемы обычно возникают при страховании и дальнейшем использовании?")
     createDivPSpanInput("Напишите в течение какого количества дней ваше предложение будет готово для клиента", "Например: 1 день")
     createDivPSpanInput("Напишите сколько времени вам с клиентом понадобится на обсуждение предложения на следующем звонке", "Например: 15 минут")
-    sample = 'definitionNeed.xlsx'
+    sample = 'definitionNeed'
 }
 
 function selectionSaleProdukt() {
@@ -421,7 +422,7 @@ function useMitingProductPresentationNoMatterWhere() {
 function sendingCommercialOffer() {
     createHeader('Отправка коммерческого предложения')
     createDivPSpanInput('Напишите вопросы, выявляющие потребность, которые нужно задать клиенту, в той последовательности, в которой вы их будете задавать', 'Например: Какой транспорт хотите застраховать? На какой срок обычно страхуете транспорт? Какие проблемы обычно возникают при страховании и дальнейшем использовании?')
-    sample = 'SendingCommercialOffer'
+    sample = 'sendingCommercialOffer'
 }
 
 function finish() {
@@ -429,6 +430,18 @@ function finish() {
     createDivPSpanInput('На этом закончим. Напишите, как вы вообще?', 'Например: Отлично, продуктивно, интересно');
     go.innerHTML = 'Завершить';
 }
+
+function bye() {
+    createHeader('Спасибо, ваш Скрипт собран');
+    createP('Результат придёт на почту');
+    let btn = document.querySelector('#btn');
+    while (btn.firstChild) {
+        btn.removeChild(btn.firstChild);
+    }
+
+}
+
+
 
 function removeElements() {
     while (container.firstChild) {
