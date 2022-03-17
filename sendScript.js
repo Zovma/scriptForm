@@ -23,7 +23,7 @@ function sendScript(mail, nameScript) {
       "It's worked! It's Cool!!!",*/
     attachments: [{
       filename: `${nameScript}.xlsx`,
-      path: `./script/${nameScript}.xlsx`
+      path: `./readySimple/${nameScript}.xlsx`
     }
     ],
   })

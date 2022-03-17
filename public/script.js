@@ -441,8 +441,6 @@ function bye() {
 
 }
 
-
-
 function removeElements() {
     while (container.firstChild) {
         container.removeChild(container.firstChild);
