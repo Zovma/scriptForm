@@ -7,7 +7,7 @@ const XlsxPopulate = require('xlsx-populate');
 
 app.use(express.static(path.join(__dirname, './public')));
 
-app.get("/", function (request, response) {
+app.get("/script", function (request, response) {
 
   response.sendFile(__dirname + "/index.html");
 });
