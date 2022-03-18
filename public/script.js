@@ -433,7 +433,7 @@ function finish() {
 
 function bye() {
     createHeader('Спасибо, ваш Скрипт собран');
-    createP('Результат придёт на почту');
+    createP(`Результат придёт на почту ${result[0][0]}`);
     let btn = document.querySelector('#btn');
     while (btn.firstChild) {
         btn.removeChild(btn.firstChild);

@@ -18,9 +18,9 @@ function sendScript(mail, nameScript) {
     from: 'Скрипт продаж <eexa44ple@yandex.ru>',
     to: mail,
     subject: 'Готовый скрипт продаж',
-    /*text: 'This message was sent from Node js server.',
-    html:
-      "It's worked! It's Cool!!!",*/
+    text: 'Скрипт готов!',
+    // html:
+    //   "<p>",
     attachments: [{
       filename: `${nameScript}.xlsx`,
       path: `./readySimple/${nameScript}.xlsx`
